@@ -1,0 +1,58 @@
+The data flow :
+1. Client (Postman or UI) calls the Controller via POST /publish, sending a UserDTO.
+2. Controller calls the Service (saveTheData).
+3. Service sends the message to RabbitMQ through Producer.
+4. RabbitMQ sends the message to the Consumer.
+5. Consumer receives the message, converts it to UserEntity, and saves it in the database.
+6. Client calls GET /subscribe to fetch stored users.
+7. Service retrieves data from the repository, converts UserEntity to UserDTO, and returns it.
+
+Steps involved
+1. Create and setup up Springboot project and add the dependencies :
+- Spring Web
+- Spring RabbitMQ
+- Lombok
+- Spring Data
+- Devtools
+- Postgres
+
+2. Check pom.xml for all maven dependency
+3 . Design the project structure
+4. Add properties of RabbitMQ like host , port , username , password , queue , exchange and routing key in application.yml file
+5 . Create beans in Configuration class inside configuration folder.
+6. Create the RabbitMQ Producer inside service package.
+for some read AMQP (Advanced Message Queue Protocol
+7. https://www/baeldung.com/spring-amqp
+8. Design consumer and annotate the DemoApplication class with @EnableRabbit
+
+9.design controller post method to read the data
+10. Launch the docker first pull the rabbit mq if it not pulled earlier : docker pull rabbitmq:4.0.5-management
+
+11. Start the container and make sure application.yml has all properties related to docker image .
+ Docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.0.5-management
+12 . ./gradlew bootRun
+And run your application for the first time
+13 for next time launch docker and run command :
+          docker start rabbitmq (from command prompt) or start from docker app by pressing play button
+          ./gradlew bootRun
+14. If yo
+
+How Does the Consumer (consume()) Get Triggered?
+The @RabbitListener annotation on the consume() method registers it as a message listener.
+When a message is published to the queue, Spring AMQP (RabbitMQ) automatically detects it and
+calls the consume() method.
+We do not need to manually call consume(). It will be invoked when a message arrives in the queue.
+
+How Data Flows Without Explicitly Calling consume()?
+Controller Calls saveTheData()
+- Stores user in the database.
+- Sends message to RabbitMQ via rabbitProducer.sendMessage(userDto);
+Message is Published to RabbitMQ
+- RabbitMQ holds the message in the queue.
+- RabbitMQ Triggers consume()
+When a message is available in the queue, Spring automatically calls the consume() method because
+ of:
+ @RabbitListener(queues = {"${rabbitmq.queue.name}"})
+ public void consume (UserDTO userDto) {
+}
+The message is processed and saved in the database.

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: demo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user-data
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+# customize properties which will be used in the code
+rabbitmq:
+  exchange:
+    name: frw-exchange
+  queue:
+    name: msg-queue
+  routing:
+    key: routing-key
