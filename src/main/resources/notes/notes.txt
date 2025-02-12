@@ -56,3 +56,12 @@ When a message is available in the queue, Spring automatically calls the consume
  public void consume (UserDTO userDto) {
 }
 The message is processed and saved in the database.
+
+points to remember
+1. The error indicates that a container named rabbitmq is already running. To fix this, you can either:
+   Stop and remove the existing container (if you don't need it anymore):
+    docker stop rabbitmq
+     docker rm rabbitmq
+2. Rename the existing container (if you want to keep it running):
+docker rename rabbitmq old-rabbitmq
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.0.5-management

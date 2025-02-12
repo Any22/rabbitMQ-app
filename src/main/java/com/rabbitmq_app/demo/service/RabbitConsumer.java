@@ -16,7 +16,8 @@ public class RabbitConsumer {
 
     /****************************************************************************************************
      * saveAndFlush() immediately writes data to the database. This is unnecessary unless  specifically
-     * need immediate commit.Comsumer should not use the .saveAndFlush() method
+     * need immediate commit.
+     * Comsumer should not use the .saveAndFlush() method
      * Instead, use save() (which batches transactions).
      *
      *
