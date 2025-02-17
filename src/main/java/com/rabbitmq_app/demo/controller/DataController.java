@@ -18,7 +18,7 @@ public class DataController {
     @Inject
     private MessageService service;
 
-    //http://localhost:8081/api/v1/create-data
+    //http://localhost:8080/api/v1/create-data
     @PostMapping("/publish")
     public ResponseEntity<String> sendJsonMessage(@NotNull @RequestBody UserDTO user) {
         service.saveTheData(user);

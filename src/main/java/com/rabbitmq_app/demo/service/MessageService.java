@@ -21,18 +21,14 @@ public class MessageService {
     @Inject
     private RabbitProducer rabbitProducer;
 
-    @Transactional
+
     public void saveTheData(UserDTO userDto) {
-        // Save data in DB first
-        UserEntity userEntity = UserEntity.builder().first_name(userDto.getFirstName()).last_name(userDto.getLastName()).build();
-        messageRepository.save(userEntity);
-        // Send message to RabbitMQ
+        // Send message to RabbitMQ , there DTO will be used by consumer , see consumer
         rabbitProducer.sendMessage(userDto);
 
     }
 
 
-    @Transactional
     public UserResponse getUser() {
         List<UserEntity> userEntityList = messageRepository.findAll();
         if (userEntityList.isEmpty()) {

@@ -17,11 +17,10 @@ public class RabbitConsumer {
     /****************************************************************************************************
      * saveAndFlush() immediately writes data to the database. This is unnecessary unless  specifically
      * need immediate commit.
-     * Comsumer should not use the .saveAndFlush() method
+     * Consumer should not use the .saveAndFlush() method
      * Instead, use save() (which batches transactions).
-     *
-     *
-     * @param userDto
+     * The consumer is converting data into entity and saving it to database
+     * The consumer method doesn't need to be called explicitly
      ***************************************************************************************************/
     @RabbitListener(queues = {"${rabbitmq.queue.name}"})
     public void consume(UserDTO userDto) {
